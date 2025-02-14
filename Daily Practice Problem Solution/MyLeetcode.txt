@@ -1,6 +1,5 @@
                                HAPPY CODING
 ------------------------------------------------------------------------
-13/02/2024
 
 3066. Minimum Operations to Exceed Threshold Value II
 Medium
@@ -49,7 +48,6 @@ The input is generated such that an answer always exists. That is, there exists 
 
 
 Solution:
-========================================================================
 
 class Solution {
     public int minOperations(int[] nums, int k) {
@@ -71,7 +69,6 @@ class Solution {
     }
 }
 
------------------------------------------------------------------------------------
 
 53. Maximum Subarray
 Medium
@@ -103,7 +100,7 @@ Constraints:
 
 Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
 
-===================================================================================
+
 Solution:
 
 class Solution {
