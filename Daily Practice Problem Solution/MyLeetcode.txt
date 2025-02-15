@@ -441,7 +441,6 @@ class ProductOfNumbers {
 
 
 121. Best Time to Buy and Sell Stock
-
 Easy
 
 You are given an array prices where prices[i] is the price of a given stock on the ith day.
@@ -490,4 +489,157 @@ class Solution {
 }
 
 
+2698. Find the Punishment Number of an Integer
+Medium
 
+Given a positive integer n, return the punishment number of n.
+
+The punishment number of n is defined as the sum of the squares of all integers i such that:
+
+1 <= i <= n
+The decimal representation of i * i can be partitioned into contiguous substrings such that the sum of the integer values of these substrings equals i.
+ 
+Example 1:
+
+Input: n = 10
+Output: 182
+Explanation: There are exactly 3 integers i in the range [1, 10] that satisfy the conditions in the statement:
+- 1 since 1 * 1 = 1
+- 9 since 9 * 9 = 81 and 81 can be partitioned into 8 and 1 with a sum equal to 8 + 1 == 9.
+- 10 since 10 * 10 = 100 and 100 can be partitioned into 10 and 0 with a sum equal to 10 + 0 == 10.
+Hence, the punishment number of 10 is 1 + 81 + 100 = 182
+Example 2:
+
+Input: n = 37
+Output: 1478
+Explanation: There are exactly 4 integers i in the range [1, 37] that satisfy the conditions in the statement:
+- 1 since 1 * 1 = 1. 
+- 9 since 9 * 9 = 81 and 81 can be partitioned into 8 + 1. 
+- 10 since 10 * 10 = 100 and 100 can be partitioned into 10 + 0. 
+- 36 since 36 * 36 = 1296 and 1296 can be partitioned into 1 + 29 + 6.
+Hence, the punishment number of 37 is 1 + 81 + 100 + 1296 = 1478
+ 
+Constraints:
+1 <= n <= 1000
+
+Solution:
+
+
+152. Maximum Product Subarray
+Medium
+
+Given an integer array nums, find a subarraythat has the largest product, and return the product.
+The test cases are generated so that the answer will fit in a 32-bit integer.
+
+Example 1:
+
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+Example 2:
+
+Input: nums = [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+ 
+Constraints:
+1 <= nums.length <= 2 * 104
+-10 <= nums[i] <= 10
+The product of any subarray of nums is guaranteed to fit in a 32-bit integer.
+
+
+Solution:
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int maxProduct = nums[0];
+        int minProduct = nums[0];
+
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] >= 0) {
+                maxProduct = Math.max(nums[i], maxProduct * nums[i]);
+                minProduct = Math.min(nums[i], minProduct * nums[i]);
+            } else {
+                int temp = maxProduct;
+                maxProduct = Math.max(nums[i], minProduct * nums[i]);
+                minProduct = Math.min(nums[i], temp * nums[i]);
+            }
+            result = Math.max(result, maxProduct);
+        }
+        return result;
+    }
+}
+
+3066. Minimum Operations to Exceed Threshold Value II
+Medium
+
+You are given a 0-indexed integer array nums, and an integer k.
+You are allowed to perform some operations on nums, where in a single operation, you can:
+Select the two smallest integers x and y from nums.
+Remove x and y from nums.
+Insert (min(x, y) * 2 + max(x, y)) at any position in the array.
+Note that you can only apply the described operation if nums contains at least two elements.
+
+Return the minimum number of operations needed so that all elements of the array are greater than or equal to k.
+
+Example 1:
+
+Input: nums = [2,11,10,1,3], k = 10
+
+Output: 2
+
+Explanation:
+In the first operation, we remove elements 1 and 2, then add 1 * 2 + 2 to nums. nums becomes equal to [4, 11, 10, 3].
+In the second operation, we remove elements 3 and 4, then add 3 * 2 + 4 to nums. nums becomes equal to [10, 11, 10].
+At this stage, all the elements of nums are greater than or equal to 10 so we can stop. 
+
+It can be shown that 2 is the minimum number of operations needed so that all elements of the array are greater than or equal to 10.
+
+Example 2:
+
+Input: nums = [1,1,2,4,9], k = 20
+
+Output: 4
+
+Explanation:
+
+After one operation, nums becomes equal to [2, 4, 9, 3]. 
+After two operations, nums becomes equal to [7, 4, 9]. 
+After three operations, nums becomes equal to [15, 9]. 
+After four operations, nums becomes equal to [33].
+At this stage, all the elements of nums are greater than 20 so we can stop. 
+
+It can be shown that 4 is the minimum number of operations needed so that all elements of the array are greater than or equal to 20.
+
+Constraints:
+2 <= nums.length <= 2 * 105
+1 <= nums[i] <= 109
+1 <= k <= 109
+The input is generated such that an answer always exists. That is, there exists some sequence of operations after which all elements of the array are greater than or equal to k.
+
+Solution:
+
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        for (int num : nums) {
+            pq.offer((long) num);
+        }
+        int op = 0;
+        while (pq.size() >= 2) {
+            long x = pq.poll(); // remove minimum
+            if (x >= k)
+            break;
+            long y = pq.poll();
+            long res = Math.min(x, y) * 2 + Math.max(x, y);
+            pq.offer(res);
+            op++;
+        }
+        return op;
+    }
+}
