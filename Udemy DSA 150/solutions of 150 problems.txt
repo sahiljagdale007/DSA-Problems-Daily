@@ -1,0 +1,277 @@
+1.Maximum Subarray
+Easy
+
+Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+Example 1:
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+Example 2:
+
+Input: nums = [1]
+Output: 1
+Explanation: The subarray [1] has the largest sum 1.
+Example 3:
+
+Input: nums = [5,4,-1,7,8]
+Output: 23
+Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+ 
+Constraints:
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+ 
+Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
+
+Solution:
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int max = nums[0];
+        int currSum = nums[0];
+        for (int i = 1; i < nums.length; i++) { // 1 to (n-1)
+            if (currSum < 0) {
+                currSum = 0;
+            }
+            currSum = currSum + nums[i];
+            if (currSum > max) {
+                max = currSum;
+            }
+        }
+        return max;
+    }
+}
+
+2.Best Time to Buy and Sell Stock
+Easy
+
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+Example 1:
+
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+Example 2:
+
+Input: prices = [7,6,4,3,1]
+Output: 0
+Explanation: In this case, no transactions are done and the max profit = 0.
+
+Constraints:
+1 <= prices.length <= 105
+0 <= prices[i] <= 104
+
+Solution:
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int buyPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (buyPrice < prices[i]) {
+                int profit = prices[i] - buyPrice;
+                maxProfit = Math.max(maxProfit, profit);
+            } else {
+                buyPrice = prices[i];
+            }
+        }
+        return maxProfit;
+    }
+}
+
+3.Maximum Product Subarray
+Medium
+
+Given an integer array nums, find a subarray that has the largest product, and return the product.
+The test cases are generated so that the answer will fit in a 32-bit integer.
+
+Example 1:
+
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+Example 2:
+
+Input: nums = [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+Constraints:
+1 <= nums.length <= 2 * 104
+-10 <= nums[i] <= 10
+
+The product of any subarray of nums is guaranteed to fit in a 32-bit integer.
+
+Solution:
+class Solution {
+    public int maxProduct(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int maxProduct = nums[0];
+        int minProduct = nums[0];
+
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] >= 0) {
+                maxProduct = Math.max(nums[i], maxProduct * nums[i]);
+                minProduct = Math.min(nums[i], minProduct * nums[i]);
+            } else {
+                int temp = maxProduct;
+                maxProduct = Math.max(nums[i], minProduct * nums[i]);
+                minProduct = Math.min(nums[i], temp * nums[i]);
+            }
+            result = Math.max(result, maxProduct);
+        }
+        return result;
+    }
+}
+
+4. Product of Array Except Self
+Medium
+
+Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+You must write an algorithm that runs in O(n) time and without using the division operation.
+
+Example 1:
+Input: nums = [1,2,3,4]
+Output: [24,12,8,6]
+Example 2:
+
+Input: nums = [-1,1,0,-3,3]
+Output: [0,0,9,0,0]
+
+Constraints:
+2 <= nums.length <= 105
+-30 <= nums[i] <= 30
+The input is generated such that answer[i] is guaranteed to fit in a 32-bit integer.
+
+Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
+
+Solution:
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+
+        int right[] = new int[n];
+        int left[] = new int[n];
+
+        int output[] = new int[n];
+
+        left[0] = 1;
+        right[n - 1] = 1;
+
+        for (int i = 1; i < n; i++) {
+            left[i] = left[i - 1] * nums[i - 1];
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            right[i] = right[i + 1] * nums[i + 1];
+        }
+
+        for (int i = 0; i < n; i++) {
+            output[i] = left[i] * right[i];
+        }
+        return output;
+    }
+}
+
+5.Rotate Array
+Medium
+
+Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+
+Example 1:
+Input: nums = [1,2,3,4,5,6,7], k = 3
+Output: [5,6,7,1,2,3,4]
+Explanation:
+rotate 1 steps to the right: [7,1,2,3,4,5,6]
+rotate 2 steps to the right: [6,7,1,2,3,4,5]
+rotate 3 steps to the right: [5,6,7,1,2,3,4]
+
+Example 2:
+Input: nums = [-1,-100,3,99], k = 2
+Output: [3,99,-1,-100]
+Explanation: 
+rotate 1 steps to the right: [99,-1,-100,3]
+rotate 2 steps to the right: [3,99,-1,-100]
+
+Constraints:
+1 <= nums.length <= 105
+-231 <= nums[i] <= 231 - 1
+0 <= k <= 105
+ 
+Follow up:
+
+Try to come up with as many solutions as you can. There are at least three different ways to solve this problem.
+Could you do it in-place with O(1) extra space?
+
+Solution:
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+        reverse(nums, 0, n - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, n-1);
+    }
+
+    // helper function
+    void reverse(int arr[], int start, int end) {
+        int i = start;
+        int j = end;
+
+        while (i < j) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
+    }
+}
+
+
+6. Max Consecutive Ones
+Easy
+Given a binary array nums, return the maximum number of consecutive 1's in the array.
+
+Example 1:
+Input: nums = [1,1,0,1,1,1]
+Output: 3
+Explanation: The first two digits or the last three digits are consecutive 1s. The maximum number of consecutive 1s is 3.
+
+Example 2:
+Input: nums = [1,0,1,1,0,1]
+Output: 2
+
+Constraints:
+1 <= nums.length <= 105
+nums[i] is either 0 or 1
+
+Solution:
+
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int ans = 0;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                count = 0;
+            } else {
+                count++;
+            }
+            if (count > ans) {
+                ans = count;
+            }
+        }
+        return ans;
+    }
+}
