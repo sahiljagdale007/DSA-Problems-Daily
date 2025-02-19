@@ -1054,7 +1054,7 @@ public class Solution {
 
         return result;
     }
-}
+
     private boolean isValid(List<String> board, int row, int col) {
         // Look for up
         for (int i = row; i >= 0; i--) {
@@ -1097,3 +1097,4 @@ public class Solution {
         }
     }
 }
+
